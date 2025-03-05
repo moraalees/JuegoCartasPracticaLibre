@@ -1,8 +1,10 @@
 package src
 
 class CartaEspecial(
+    id: Int,
     nombre: String,
     descripcion: String,
-    numeroABorrar: Int
-) : Carta(nombre, descripcion){
+    val numeroABorrar: Int
+) : Carta(id, nombre, descripcion){
+
 }

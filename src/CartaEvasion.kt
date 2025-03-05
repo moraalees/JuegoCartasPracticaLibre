@@ -1,7 +1,9 @@
 package src
 
 class CartaEvasion(
+    id: Int,
     nombre: String,
     descripcion: String
-) : Carta(nombre, descripcion) {
+) : Carta(id, nombre, descripcion) {
+
 }

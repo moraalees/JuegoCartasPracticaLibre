@@ -1,8 +1,10 @@
 package src
 
 class CartaCuracion(
+    id: Int,
     nombre: String,
     descripcion: String,
-    puntosCuracion: Int
-) : Carta(nombre, descripcion) {
+    val puntosCuracion: Int
+) : Carta(id, nombre, descripcion) {
+
 }
