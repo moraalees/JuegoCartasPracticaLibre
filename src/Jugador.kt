@@ -34,6 +34,11 @@ class Jugador(
         println("Mazo agregado con éxito.")
     }
 
+    fun agregarCarta(carta: Carta){
+        cartasAlmacenadas.agregarElemento(carta)
+        println("Carta agregada con éxito.")
+    }
+
     fun renombrarJugador(nuevoNombre: String){
         nombre = nuevoNombre
     }
@@ -53,8 +58,11 @@ class Jugador(
         println("¡El jugador $id se ha curado y ahora su vida es de $puntosSalud puntos!")
     }
 
-    fun eliminarCarta(carta: Carta, jugador: Jugador){
-
+    fun eliminarCartaContrincante(carta: Carta, jugador: Jugador){
+        val posicionCartaABorrar = carta.especialidad - 1
+        val cartaEliminada = mazoActivo!!.cartas.removeAt(posicionCartaABorrar)
+        println("Carta '${cartaEliminada.nombre}' eliminada del mazo activo '${mazoActivo!!.nombre}' en la posición $posicionCartaABorrar.")
     }
 
 }
+
