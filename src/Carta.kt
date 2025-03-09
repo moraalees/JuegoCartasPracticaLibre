@@ -5,7 +5,7 @@ abstract class Carta(
     var nombre: String,
     val descripcion: String,
     val especialidad: Int
-) {
+) : Accionable {
     fun renombrarCarta(nuevoNombre: String){
         nombre = nuevoNombre
     }

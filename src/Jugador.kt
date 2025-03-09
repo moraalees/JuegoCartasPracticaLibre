@@ -43,21 +43,6 @@ class Jugador(
         nombre = nuevoNombre
     }
 
-    fun atacar(carta: Carta, jugador: Jugador){
-        jugador.puntosSalud = jugador.puntosSalud - (carta.especialidad - puntosDefensa)
-        println("¡El jugador ${jugador.id} ha sido atacado y su vida ahora es de $puntosSalud puntos de salud!")
-    }
-
-    fun defender(carta: Carta){
-        puntosDefensa += carta.especialidad
-        println("¡La defensa del jugador $id ha subido a $puntosDefensa puntos!")
-    }
-
-    fun curar(carta: Carta){
-        puntosSalud += carta.especialidad
-        println("¡El jugador $id se ha curado y ahora su vida es de $puntosSalud puntos!")
-    }
-
     fun eliminarCartaContrincante(carta: Carta, jugador: Jugador){
         val posicionCartaABorrar = carta.especialidad - 1
         val cartaEliminada = mazoActivo!!.cartas.removeAt(posicionCartaABorrar)
