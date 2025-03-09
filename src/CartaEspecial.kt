@@ -8,7 +8,7 @@ class CartaEspecial(
 ) : Carta(id, nombre, descripcion, especialidad) {
 
     init {
-        require(especialidad < 6){ "El número debe ser de hasta 5 casillas." }
+        require(especialidad < 4){ "El número debe ser de hasta 3 casillas." }
     }
 
 }

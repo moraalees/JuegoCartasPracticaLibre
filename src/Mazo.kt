@@ -91,6 +91,16 @@ class Mazo(
         }
     }
 
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is Mazo) return false
+        return this.id == other.id
+    }
+
+    override fun hashCode(): Int {
+        return id
+    }
+
     override fun toString(): String {
         return "Mazo $id '$nombre' tiene ${cartas.size} cartas en él (Total de especialidad: ${calcularTotalEspecialidad()})."
     }

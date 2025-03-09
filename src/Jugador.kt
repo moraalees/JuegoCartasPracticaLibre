@@ -18,6 +18,22 @@ class Jugador(
             field = value
         }
 
+    var mazoActivo: Mazo? = null
+
+    fun seleccionarMazoBatalla(mazo: Mazo) {
+        if (mazosAlmacenados.contiene(mazo)) {
+            mazoActivo = mazo
+            println("Mazo ${mazo.id} '${mazo.nombre}' seleccionado con éxito.")
+        } else {
+            println("No puedes seleccionar un mazo antes de añadirlo al inventario del jugador.")
+        }
+    }
+
+    fun agregarMazo(mazo: Mazo){
+        mazosAlmacenados.agregarElemento(mazo)
+        println("Mazo agregado con éxito.")
+    }
+
     fun renombrarJugador(nuevoNombre: String){
         nombre = nuevoNombre
     }
@@ -37,6 +53,8 @@ class Jugador(
         println("¡El jugador $id se ha curado y ahora su vida es de $puntosSalud puntos!")
     }
 
+    fun eliminarCarta(carta: Carta, jugador: Jugador){
 
+    }
 
 }

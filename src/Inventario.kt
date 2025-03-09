@@ -8,6 +8,10 @@ class Inventario<T>(
         return elementos.isEmpty()
     }
 
+    fun contiene(elemento: T): Boolean {
+        return elementos.contains(elemento)
+    }
+
     fun agregarElemento(elemento: T) {
         if (elemento in elementos){
             println("El elemento ya está en el inventario.")
