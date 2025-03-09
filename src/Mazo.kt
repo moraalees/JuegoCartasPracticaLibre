@@ -7,8 +7,8 @@ class Mazo(
 ) {
 
     companion object {
-        private const val MAXIMO_CARTAS_MAZO = 5
-        private const val MAXIMO_PUNTOS_ESPECIALIDAD = 20
+        private const val MAXIMO_CARTAS_MAZO = 3
+        private const val MAXIMO_PUNTOS_ESPECIALIDAD = 12
     }
 
     private fun tipoCarta(carta: Carta): String {
@@ -17,7 +17,6 @@ class Mazo(
             carta is CartaDefensa -> "Defensa"
             carta is CartaCuracion -> "Curación"
             carta is CartaEspecial -> "Especial"
-            carta is CartaEvasion -> "Evasión"
             else -> "Desconocido"
         }
         return tipo
@@ -60,7 +59,7 @@ class Mazo(
     }
 
     fun mostrarCartas() {
-        println("Cartas dentro del mazo '$nombre':")
+        println("Cartas dentro del mazo $id '$nombre':")
         for (carta in cartas) {
             println("La carta ${carta.id} '${carta.nombre}' (${carta.descripcion}) es de tipo ${tipoCarta(carta)} (Especialidad: ${carta.especialidad})")
         }
@@ -72,8 +71,10 @@ class Mazo(
             println("La posición no puede ser negativa.")
             return
         }
-        val especialidadActual = if (posicion < cartas.size) cartas[posicion].especialidad else 0
-
+        val especialidadActual = if (posicion < cartas.size)
+            cartas[posicion].especialidad
+        else
+            0
         if (!puedeAgregarCarta(carta.especialidad - especialidadActual)) {
             println("No puedes sustituir la carta en la posición $posicion. Superarías el límite de $MAXIMO_PUNTOS_ESPECIALIDAD puntos de especialidad.")
             return
