@@ -17,7 +17,7 @@ class Inventario<T>(
             println("El elemento ya está en el inventario.")
         } else {
             elementos.add(elemento)
-            println("Elemento agregado al inventario correcatmente.")
+            println("Elemento agregado al inventario correctamente.")
         }
     }
 
