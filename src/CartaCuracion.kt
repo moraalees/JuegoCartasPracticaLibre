@@ -8,7 +8,7 @@ class CartaCuracion(
 ) : Carta(id, nombre, descripcion, especialidad) {
 
     init {
-        require(especialidad < 6){ "Los puntos de curación deben ser de hasta 10 puntos." }
+        require(especialidad < 5){ "Los puntos de curación deben ser de hasta 4 puntos." }
     }
 
     override fun atacar(jugador: Jugador) {

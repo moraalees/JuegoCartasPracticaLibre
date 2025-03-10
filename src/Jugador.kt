@@ -3,8 +3,8 @@ package src
 class Jugador(
     val id: Int,
     var nombre: String,
-    val cartasAlmacenadas: Inventario<Carta>,
-    val mazosAlmacenados: Inventario<Mazo>
+    val cartasAlmacenadas: Inventario<Carta> = Inventario(),
+    val mazosAlmacenados: Inventario<Mazo> = Inventario()
 ) {
     var puntosSalud: Int = 20
         set(value){
@@ -41,12 +41,6 @@ class Jugador(
 
     fun renombrarJugador(nuevoNombre: String){
         nombre = nuevoNombre
-    }
-
-    fun eliminarCartaContrincante(carta: Carta, jugador: Jugador){
-        val posicionCartaABorrar = carta.especialidad - 1
-        val cartaEliminada = mazoActivo!!.cartas.removeAt(posicionCartaABorrar)
-        println("Carta '${cartaEliminada.nombre}' eliminada del mazo activo '${mazoActivo!!.nombre}' en la posición $posicionCartaABorrar.")
     }
 
     override fun toString(): String {

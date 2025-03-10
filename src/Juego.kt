@@ -39,6 +39,8 @@ class Juego (val jugador1: Jugador, val jugador2: Jugador){
             }
             is CartaDefensa -> {
                 carta.defender(jugador)
+                jugador.mazoActivo?.cartas?.remove(carta)
+                println("¡La carta de defensa '${carta.nombre}' ha sido eliminada del mazo de ${jugador.nombre}!")
             }
             is CartaCuracion -> {
                 carta.curar(jugador)
@@ -62,7 +64,6 @@ class Juego (val jugador1: Jugador, val jugador2: Jugador){
             println("Opción inválida, perdiste el turno ${jugador.nombre}...")
             return
         }
-
         val cartaSeleccionada = jugador.mazoActivo!!.cartas[entrada - 1]
 
         accionarCarta(cartaSeleccionada, jugador)

@@ -8,7 +8,7 @@ class CartaAtaque(
 ) : Carta(id, nombre, descripcion, especialidad) {
 
     init{
-        require(especialidad < 11){ "Los puntos de ataque deben ser de hasta 10 puntos." }
+        require(especialidad in 1..10){ "Los puntos de ataque deben ser de hasta 10 puntos." }
     }
 
     override fun atacar(jugador: Jugador){
