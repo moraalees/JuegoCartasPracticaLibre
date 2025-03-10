@@ -5,6 +5,7 @@ val listaMazos = mutableListOf<Mazo>()
 val listaJugadores = mutableListOf<Jugador>()
 
 fun mostrarReglas(){
+    println("--------------")
     println("""
         **REGLAS DEL JUEGO**
         1. Cada jugador tiene un mazo de cartas.
@@ -17,6 +18,7 @@ fun mostrarReglas(){
     println("2. EL JUGADOR ANTES DE JUGAR DEBE CREARSE DOS INVENTARIOS.")
     println("3. EL JUGADOR ANTES DE JUGAR DEBE ESTABLECER UN MAZO ACTIVO.")
     println("4. ENTRE LAS 3 CARTAS DEL MAZO NO SE PUEDEN SUPERAR LOS 15 PUNTOS DE ESPECIALIDAD.")
+    println("--------------")
 }
 
 fun mostrarMenu(){
@@ -100,9 +102,9 @@ fun crearCarta(): Carta? {
 }
 
 fun crearMazo(): Mazo{
-    println("Escriba el ID de su carta:")
+    println("Escriba el ID del mazo:")
     val id = readlnOrNull()?.toIntOrNull()?: 0
-    println("Escriba el nombre de su carta (alias):")
+    println("Escriba el nombre de su mazo (alias):")
     val nombre = readlnOrNull()?: "Desconocido"
     val cartas = mutableListOf<Carta>()
 
@@ -111,9 +113,9 @@ fun crearMazo(): Mazo{
 }
 
 fun crearJugador(): Jugador {
-    println("Escriba el ID de su carta:")
+    println("Escriba el ID del jugador:")
     val id = readlnOrNull()?.toIntOrNull() ?: 0
-    println("Escriba el nombre de su carta (alias):")
+    println("Escriba el nombre del jugador (alias):")
     val nombre = readlnOrNull() ?: "Desconocido"
 
     val jugador = Jugador(id, nombre)
@@ -121,21 +123,27 @@ fun crearJugador(): Jugador {
 }
 
 fun mostrarCartas() {
+    println("-----------")
     listaCartas.forEachIndexed { indice, carta ->
         println("${indice + 1}. ${carta.nombre} (${carta.descripcion}).")
     }
+    println("-----------")
 }
 
 fun mostrarMazos(){
+    println("-----------")
     listaMazos.forEachIndexed { indice, mazo ->
         println("${indice + 1}. ${mazo.nombre} (${mazo.cartas.size} cartas)")
     }
+    println("-----------")
 }
 
 fun mostrarJugadores(){
+    println("-----------")
     listaJugadores.forEachIndexed { indice, jugador ->
         println("${indice + 1}. ${jugador.nombre} con el ID de ${jugador.id}")
     }
+    println("-----------")
 }
 
 fun comprobarCartas(): Boolean{
@@ -387,7 +395,25 @@ fun main() {
             println(jugador)
             listaJugadores.add(jugador)
         } else if (entrada == 9) {
-            //TODO(LIBRERIAS EXTERNAS)
+            println("Escoja dos jugadores a continuación.")
+            val jugador1 = escogerJugador()
+            val jugador2 = escogerJugador()
+            if (jugador1 != null && jugador2 != null){
+                println("Jugadores elegidos con éxito, ahora comprobaremos mazos activos...")
+                if (jugador1.mazoActivo != null && jugador2.mazoActivo != null){
+                    if (jugador1.mazoActivo!!.cartas.size == 3 && jugador2.mazoActivo!!.cartas.size == 3){
+                        val juego = Juego(jugador1, jugador2)
+                        juego.iniciar()
+                    } else {
+                        mostrarError("Uno de los mazos no tiene 3 cartas en él.")
+                    }
+                } else {
+                    mostrarError("Uno de los jugadores no tiene un mazo activo seleccionado.")
+                }
+            } else {
+                mostrarError("Hubo un error en la selección de jugador 1.")
+            }
+
         } else if (entrada == 10) {
             mostrarMazos()
         } else if (entrada == 11) {
