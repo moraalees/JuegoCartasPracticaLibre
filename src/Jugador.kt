@@ -49,5 +49,7 @@ class Jugador(
         println("Carta '${cartaEliminada.nombre}' eliminada del mazo activo '${mazoActivo!!.nombre}' en la posición $posicionCartaABorrar.")
     }
 
+    override fun toString(): String {
+        return "Jugador $id '$nombre' tiene $puntosSalud puntos de vida."
+    }
 }
-

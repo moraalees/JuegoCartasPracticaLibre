@@ -12,8 +12,12 @@ class CartaAtaque(
     }
 
     override fun atacar(jugador: Jugador){
-        jugador.puntosSalud = jugador.puntosSalud - (especialidad - jugador.puntosDefensa)
-        println("¡El jugador ${jugador.id} ha sido atacado y su vida ahora es de ${jugador.puntosSalud} puntos de salud!")
+        if (jugador.puntosSalud - (especialidad - jugador.puntosDefensa) > 20){
+            println("¡El jugador no ha recibido daño!")
+        } else {
+            jugador.puntosSalud = jugador.puntosSalud - (especialidad - jugador.puntosDefensa)
+            println("¡El jugador ${jugador.id} ha sido atacado y su vida ahora es de ${jugador.puntosSalud} puntos de salud!")
+        }
     }
 
     override fun defender(jugador: Jugador) {

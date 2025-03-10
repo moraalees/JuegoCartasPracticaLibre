@@ -20,8 +20,12 @@ class CartaCuracion(
     }
 
     override fun curar(jugador: Jugador){
-        jugador.puntosSalud += especialidad
-        println("¡El jugador $id se ha curado y ahora su vida es de ${jugador.puntosSalud} puntos!")
+        if (jugador.puntosSalud + especialidad > 20){
+            println("Ya tienes el máximo de puntos de salud...")
+        } else {
+            jugador.puntosSalud += especialidad
+            println("¡El jugador $id se ha curado y ahora su vida es de ${jugador.puntosSalud} puntos!")
+        }
     }
 
     override fun eliminarCartaContrincante(jugador: Jugador) {
