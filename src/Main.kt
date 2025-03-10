@@ -138,12 +138,26 @@ fun mostrarJugadores(){
     }
 }
 
-fun comprobarMazosCartas(): Boolean{
+fun comprobarCartas(): Boolean{
     if (listaCartas.isEmpty()) {
-        mostrarError("No hay cartas disponibles. Crea alguna carta primero")
+        mostrarError("No hay cartas disponibles, crea alguna carta primero")
         return false
-    } else if (listaMazos.isEmpty()) {
-        mostrarError("No hay mazos disponibles. Crea algún mazo primero")
+    } else {
+        return true
+    }
+}
+
+fun comprobarMazos(): Boolean {
+    if (listaMazos.isEmpty()) {
+        println("Advertencia: No hay mazos disponibles. Puedes crear uno nuevo.")
+        return false
+    }
+    return true
+}
+
+fun comprobarJugadores(): Boolean{
+    if (listaJugadores.isEmpty()) {
+        mostrarError("No hay jugadores disponibles, crea alguno primero")
         return false
     } else {
         return true
@@ -155,28 +169,141 @@ fun mostrarError(msj: String){
 }
 
 fun escogerMazo(): Mazo? {
-    println("Escoge un mazo:")
-    mostrarMazos()
-    val seleccionMazo = readlnOrNull()?.toIntOrNull()
-    if (seleccionMazo == null || seleccionMazo !in 1..listaMazos.size) {
-        mostrarError("Escogiste un número o entrada inválida")
+    if (listaMazos.isEmpty()) {
+        println("Advertencia: No hay mazos disponibles. Puedes crear uno nuevo.")
         return null
     } else {
-        val mazoSeleccionado = listaMazos[seleccionMazo - 1]
-        return mazoSeleccionado
+        println("Escoge un mazo:")
+        mostrarMazos()
+        val seleccionMazo = readlnOrNull()?.toIntOrNull()
+        if (seleccionMazo == null || seleccionMazo !in 1..listaMazos.size) {
+            mostrarError("Escogiste un número o entrada inválida")
+            return null
+        } else {
+            val mazoSeleccionado = listaMazos[seleccionMazo - 1]
+            return mazoSeleccionado
+        }
     }
 }
 
-fun escogerCarta(): Carta?{
-    println("Seleccione una carta:")
-    mostrarCartas()
-    val seleccionCarta = readlnOrNull()?.toIntOrNull()
-    if (seleccionCarta == null || seleccionCarta !in 1..listaCartas.size) {
-        mostrarError("Escogiste un número o entrada inválida")
-        return null
+fun escogerCarta(): Carta? {
+    if (comprobarCartas() == true) {
+        println("Seleccione una carta:")
+        mostrarCartas()
+        val seleccionCarta = readlnOrNull()?.toIntOrNull()
+        if (seleccionCarta == null || seleccionCarta !in 1..listaCartas.size) {
+            mostrarError("Escogiste un número o entrada inválida")
+            return null
+        } else {
+            val cartaSeleccionada = listaCartas[seleccionCarta - 1]
+            return cartaSeleccionada
+        }
     } else {
-        val cartaSeleccionada = listaCartas[seleccionCarta - 1]
-        return cartaSeleccionada
+        mostrarError("No hay cartas creadas")
+        return null
+    }
+}
+
+fun escogerJugador(): Jugador? {
+    if (comprobarJugadores() == true) {
+        println("Seleccione un jugador:")
+        mostrarJugadores()
+        val seleccionJugador = readlnOrNull()?.toIntOrNull()
+        if (seleccionJugador == null || seleccionJugador !in 1..listaJugadores.size) {
+            mostrarError("Selección de jugador inválida")
+            return null
+        } else {
+            val jugadorSeleccionado = listaJugadores[seleccionJugador - 1]
+            return jugadorSeleccionado
+        }
+    } else {
+        mostrarError("No hay jugadores creados")
+        return null
+    }
+}
+
+
+fun menuModificarMazo() {
+    println("**MENÚ PARA MODIFICAR MAZO**")
+    println("1. Agregar carta al mazo.")
+    println("2. Eliminar carta del mazo.")
+    println("3. Renombrar mazo.")
+    println("4. Mostrar cartas del mazo.")
+    println("5. Modificar una carta en el mazo.")
+    println("6. Volver al menú principal.")
+}
+
+fun modificarMazo() {
+    val mazoSeleccionado = escogerMazo()
+
+    if (mazoSeleccionado != null){
+        var salirSubmenu = false
+        while (!salirSubmenu) {
+            menuModificarMazo()
+            val entradaSubmenu = readlnOrNull()?.toIntOrNull()
+            when (entradaSubmenu) {
+                1 -> {
+                    val cartaSeleccionada = escogerCarta()
+                    if (cartaSeleccionada != null){
+                        mazoSeleccionado.agregarCarta(cartaSeleccionada)
+                    } else {
+                        mostrarError("Hubo un error al elegir la carta")
+                    }
+                }
+                2 -> {
+                    if (mazoSeleccionado.cartas.isEmpty()) {
+                        println("El mazo '${mazoSeleccionado.nombre}' no tiene cartas.")
+                    } else {
+                        println("Seleccione una carta para eliminar del mazo '${mazoSeleccionado.nombre}':")
+                        mazoSeleccionado.mostrarCartas()
+                        val seleccionCarta = readlnOrNull()?.toIntOrNull()
+                        if (seleccionCarta == null || seleccionCarta !in 1..mazoSeleccionado.cartas.size) {
+                            println("*ERROR* Selección de carta inválida.")
+                        } else {
+                            val cartaSeleccionada = mazoSeleccionado.cartas[seleccionCarta - 1]
+                            mazoSeleccionado.eliminarCarta(cartaSeleccionada)
+                        }
+                    }
+                }
+                3 -> {
+                    println("Ingrese el nuevo nombre para el mazo '${mazoSeleccionado.nombre}':")
+                    val nuevoNombre = readln()
+                    mazoSeleccionado.renombrarMazo(nuevoNombre)
+                    println("Mazo renombrado a '$nuevoNombre'.")
+                }
+                4 -> {
+                    mazoSeleccionado.mostrarCartas()
+                }
+                5 -> {
+                    if (mazoSeleccionado.cartas.isEmpty()) {
+                        println("El mazo '${mazoSeleccionado.nombre}' no tiene cartas.")
+                    } else {
+                        println("Seleccione una carta para modificar en el mazo '${mazoSeleccionado.nombre}':")
+                        mazoSeleccionado.mostrarCartas()
+                        val seleccionCarta = readlnOrNull()?.toIntOrNull()
+                        if (seleccionCarta == null || seleccionCarta !in 1..mazoSeleccionado.cartas.size) {
+                            mostrarError("Selección de carta inválida")
+                        } else {
+                            val posicion = seleccionCarta - 1
+                            val nuevaCarta = escogerCarta()
+                            if (nuevaCarta != null){
+                            mazoSeleccionado.modificarMazo(posicion, nuevaCarta)
+                            } else {
+                                mostrarError("Hubo un error al elegir la carta")
+                            }
+                        }
+                    }
+                }
+                6 -> {
+                    salirSubmenu = true
+                    println("Volviendo al menú principal...")
+                } else -> {
+                mostrarError("Entrada inválida, ingrese del 1-6")
+                }
+            }
+        }
+    } else {
+         mostrarError("Hubo un error al elegir el mazo")
     }
 }
 
@@ -199,16 +326,15 @@ fun main() {
             val mazo = crearMazo()
             println(mazo)
             listaMazos.add(mazo)
-        } else if (entrada == 3) {
-            if (!comprobarMazosCartas()){
-                println("Redirigiendo...")
+        }else if (entrada == 3) {
+            if (!comprobarCartas()) {
+                mostrarError("No hay cartas disponibles, crea alguna carta primero")
             } else {
                 val cartaSeleccionada = escogerCarta()
-                if (cartaSeleccionada != null){
+                if (cartaSeleccionada != null) {
                     val mazoSeleccionado = escogerMazo()
-                    if (mazoSeleccionado != null){
+                    if (mazoSeleccionado != null) {
                         mazoSeleccionado.agregarCarta(cartaSeleccionada)
-                        println("Carta ${cartaSeleccionada.id} '${cartaSeleccionada.nombre}' añadida al mazo '${mazoSeleccionado.nombre}'.")
                     } else {
                         mostrarError("Hubo un error al elegir el mazo")
                     }
@@ -217,67 +343,42 @@ fun main() {
                 }
             }
         } else if (entrada == 4) {
-            if (listaJugadores.isEmpty()) {
-                mostrarError("No hay jugadores creados. Crea un jugador primero.")
-            } else {
-                println("Seleccione un jugador:")
-                mostrarJugadores()
-                val seleccionJugador = readlnOrNull()?.toIntOrNull()
-                if (seleccionJugador == null || seleccionJugador !in 1..listaJugadores.size) {
-                    mostrarError("Selección de jugador inválida")
-                } else {
-                    val jugadorSeleccionado = listaJugadores[seleccionJugador - 1]
-
+            val jugadorSeleccionado = escogerJugador()
+                if (jugadorSeleccionado != null){
                     val cartaSeleccionada = escogerCarta()
                     if (cartaSeleccionada != null){
                         jugadorSeleccionado.cartasAlmacenadas.agregarElemento(cartaSeleccionada)
                     } else {
                         mostrarError("Hubo un error al elegir la carta")
                     }
-                }
-            }
-
-        } else if (entrada == 5) {
-            if (listaJugadores.isEmpty()) {
-                mostrarError("No hay jugadores creados, crea un jugador primero")
-            } else {
-                println("Seleccione un jugador:")
-                mostrarJugadores()
-                val seleccionJugador = readlnOrNull()?.toIntOrNull()
-                if (seleccionJugador == null || seleccionJugador !in 1..listaJugadores.size) {
-                    mostrarError("Selección de jugador inválida")
                 } else {
-                    val jugadorSeleccionado = listaJugadores[seleccionJugador - 1]
-
-                    val mazoSeleccionado = escogerMazo()
-                    if (mazoSeleccionado != null){
-                        jugadorSeleccionado.mazosAlmacenados.agregarElemento(mazoSeleccionado)
-                        println("Mazo '${mazoSeleccionado.nombre}' añadido al inventario de mazos de ${jugadorSeleccionado.nombre}.")
-                    } else {
-                        mostrarError("Hubo un error al elegir el mazo")
-                    }
+                    mostrarError("Hubo un error al elegir el jugador")
                 }
+        } else if (entrada == 5) {
+            val jugadorSeleccionado = escogerJugador()
+            if (jugadorSeleccionado != null){
+                val mazoSeleccionado = escogerMazo()
+                if (mazoSeleccionado != null){
+                    jugadorSeleccionado.mazosAlmacenados.agregarElemento(mazoSeleccionado)
+
+                } else {
+                    mostrarError("Hubo un error al elegir el mazo")
+                }
+            } else {
+                mostrarError("Hubo un error al elegir el jugador")
             }
         } else if (entrada == 6) {
-            if (listaJugadores.isEmpty()){
-                mostrarError("No hay jugadores creados, crea un jugador primero")
-            } else {
-                println("Escoge el jugador:")
-                mostrarJugadores()
-                val seleccionJugador = readlnOrNull()?.toIntOrNull()
-                if (seleccionJugador == null || seleccionJugador !in 1..listaJugadores.size) {
-                    mostrarError("Selección de jugador inválida")
+            val jugadorSeleccionado = escogerJugador()
+            if (jugadorSeleccionado != null){
+                val mazoSeleccionado = escogerMazo()
+                if (mazoSeleccionado != null){
+                    jugadorSeleccionado.mazoActivo = mazoSeleccionado
+                    println("Ahora el mazo activo de ${jugadorSeleccionado.nombre} activo ${mazoSeleccionado.id} '${mazoSeleccionado.nombre}' ")
                 } else {
-                    val jugadorSeleccionado = listaJugadores[seleccionJugador - 1]
-
-                    val mazoSeleccionado = escogerMazo()
-                    if (mazoSeleccionado != null){
-                        jugadorSeleccionado.mazoActivo = mazoSeleccionado
-                        println("Ahora el mazo activo de ${jugadorSeleccionado.nombre} activo ${mazoSeleccionado.id} '${mazoSeleccionado.nombre}' ")
-                    } else {
-                        mostrarError("No se ha podido seleccionar el mazo activo")
-                    }
+                    mostrarError("No se ha podido seleccionar el mazo activo")
                 }
+            } else {
+                mostrarError("Hubo un error al elegir al jugador")
             }
         } else if (entrada == 7) {
             mostrarReglas()
@@ -294,12 +395,12 @@ fun main() {
         } else if (entrada == 12){
             mostrarJugadores()
         } else if (entrada == 13) {
-
+            modificarMazo()
         } else if (entrada == 14) {
             salir = true
             println("Fin del programa.")
         } else {
-            println("Entrada inválida, ingrese del 1-9.")
+            mostrarError("Entrada inválida, ingrese del 1-14")
         }
     }
 }
