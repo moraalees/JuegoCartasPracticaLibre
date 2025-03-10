@@ -23,8 +23,8 @@ fun mostrarMenu(){
     println("1. Crear carta.")
     println("2. Crear mazo.")
     println("3. Añadir cartas a un mazo.")
-    println("4. Crear inventario de cartas.")
-    println("5. Crear inventario de mazos.")
+    println("4. Añadir cartas al inventario.")
+    println("5. Añadir mazos al inventario.")
     println("6. Establecer mazo activo")
     println("7. Mostrar reglas.")
     println("8. Crear jugador.")
@@ -108,6 +108,16 @@ fun crearMazo(): Mazo{
 
     val mazo = Mazo(id, nombre, cartas)
     return mazo
+}
+
+fun crearJugador(): Jugador {
+    println("Escriba el ID de su carta:")
+    val id = readlnOrNull()?.toIntOrNull() ?: 0
+    println("Escriba el nombre de su carta (alias):")
+    val nombre = readlnOrNull() ?: "Desconocido"
+
+    val jugador = Jugador(id, nombre)
+    return jugador
 }
 
 fun mostrarCartas() {
@@ -213,9 +223,7 @@ fun main() {
                 println("No hay jugadores creados. Crea un jugador primero.")
             } else {
                 println("Seleccione un jugador:")
-                listaJugadores.forEachIndexed { index, jugador ->
-                    println("${index + 1}. ${jugador.nombre}")
-                }
+                mostrarJugadores()
                 val seleccionJugador = readlnOrNull()?.toIntOrNull()
                 if (seleccionJugador == null || seleccionJugador !in 1..listaJugadores.size) {
                     println("*ERROR* Selección de jugador inválida.")
@@ -223,9 +231,7 @@ fun main() {
                     val jugadorSeleccionado = listaJugadores[seleccionJugador - 1]
 
                     println("Elige el mazo que quieres añadir al inventario de mazos de ${jugadorSeleccionado.nombre}:")
-                    listaMazos.forEachIndexed { index, mazo ->
-                        println("${index + 1}. ${mazo.nombre} (${mazo.cartas.size} cartas)")
-                    }
+                    mostrarMazos()
                     val seleccionMazo = readlnOrNull()?.toIntOrNull()
                     if (seleccionMazo == null || seleccionMazo !in 1..listaMazos.size) {
                         println("*ERROR* Escogiste un número o entrada inválida.")
@@ -260,9 +266,11 @@ fun main() {
                 }
             }
         } else if (entrada == 7) {
-                mostrarReglas()
+            mostrarReglas()
         } else if (entrada == 8) {
-
+            val jugador = crearJugador()
+            println(jugador)
+            listaJugadores.add(jugador)
         } else if (entrada == 9) {
 
         } else if (entrada == 10) {
